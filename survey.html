@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StellarMind - Astronaut Mental Wellness</title>
+    <style>
+      :root {
+        --color-space: #0a0e17;
+        --color-dark-blue: #1a2b47;
+        --color-light-blue: #4a77bb;
+        --color-accent: #7c4dff;
+        --color-earth: #2a9d8f;
+        --color-text: #ffffff;
+        --color-text-secondary: #b0b8d1;
+        --color-mild: #4caf50;
+        --color-moderate: #ffc107;
+        --color-severe: #f44336;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--color-space);
+        color: var(--color-text);
+        line-height: 1.6;
+        overflow-x: hidden;
+        background-image: radial-gradient(
+            circle at 10% 20%,
+            rgba(28, 58, 112, 0.3) 0%,
+            transparent 20%
+          ),
+          radial-gradient(
+            circle at 90% 60%,
+            rgba(124, 77, 255, 0.2) 0%,
+            transparent 25%
+          );
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        padding: 20px 0;
+        background: rgba(10, 14, 23, 0.9);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: white;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo span {
+        color: var(--color-accent);
+        margin-right: 5px;
+      }
+
+      .app-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 0;
+      }
+
+      .screen {
+        display: none;
+        animation: fadeIn 0.5s ease;
+        flex: 1;
+      }
+
+      .active {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .welcome-screen {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+      }
+
+      h1 {
+        font-size: 3.5rem;
+        background: linear-gradient(90deg, #ffffff, #7c4dff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        font-size: 2.5rem;
+        color: var(--color-text);
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+      }
+
+      h2::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--color-accent);
+        border-radius: 2px;
+      }
+
+      p {
+        margin-bottom: 20px;
+        color: var(--color-text-secondary);
+        font-size: 1.1rem;
+        max-width: 800px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 15px;
+        background: var(--color-accent);
+        color: white;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        margin: 10px;
+        width: 250px;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+        -o-transform: translateX(-50%);
+      }
+
+      .btn:hover {
+        background: #6b3ce8;
+        /* transform: translateY(-3px); */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 2px solid var(--color-accent);
+        color: var(--color-accent);
+      }
+
+      .btn-outline:hover {
+        background: var(--color-accent);
+        color: white;
+      }
+
+      .access-warning {
+        background: rgba(244, 67, 54, 0.1);
+        border: 1px solid var(--color-severe);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      .question-container {
+        background: rgba(26, 43, 71, 0.5);
+        border-radius: 15px;
+        padding: 30px;
+        margin: 20px 0;
+        width: 100%;
+        max-width: 1200px;
+      }
+
+      .question {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+        color: var(--color-text);
+      }
+
+      .options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+
+      .option {
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+      }
+
+      .option:hover {
+        background: var(--color-accent);
+      }
+
+      .selected {
+        background: var(--color-accent);
+        box-shadow: 0 0 0 2px white;
+      }
+
+      .media-grid {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .media-card {
+        background: rgba(26, 43, 71, 0.5);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        height: 250px;
+        position: relative;
+        width: 350px;
+      }
+
+      .media-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .media-thumbnail {
+        width: 100%;
+        height: 70%;
+        object-fit: cover;
+      }
+
+      .media-info {
+        padding: 15px;
+      }
+
+      .media-title {
+        font-size: 1rem;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .media-type {
+        font-size: 0.8rem;
+        color: var(--color-text-secondary);
+      }
+
+      .level-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin: 30px 0;
+        max-width: 1200px;
+      }
+
+      .level {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .level::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        width: 80px;
+        height: 2px;
+        background: linear-gradient(
+          to right,
+          var(--color-mild),
+          var(--color-moderate),
+          var(--color-severe)
+        );
+      }
+
+      .level:last-child::after {
+        display: none;
+      }
+
+      .level-1 {
+        background-color: var(--color-mild);
+      }
+      .level-2 {
+        background-color: #8bc34a;
+      }
+      .level-3 {
+        background-color: #cddc39;
+      }
+      .level-4 {
+        background-color: #ffeb3b;
+      }
+      .level-5 {
+        background-color: #ffc107;
+      }
+      .level-6 {
+        background-color: #ff9800;
+      }
+      .level-7 {
+        background-color: #ff5722;
+      }
+      .level-8 {
+        background-color: #f4511e;
+      }
+      .level-9 {
+        background-color: #e64a19;
+      }
+      .level-10 {
+        background-color: var(--color-severe);
+      }
+
+      .level.active {
+        transform: scale(1.2);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
+      .result-container {
+        text-align: center;
+        padding: 30px;
+        background: rgba(26, 43, 71, 0.5);
+        border-radius: 15px;
+        margin: 20px 0;
+        max-width: 1200px;
+        width: 100%;
+      }
+
+      .depression-level {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 20px 0;
+        padding: 10px 20px;
+        border-radius: 30px;
+        display: inline-block;
+      }
+
+      .level-desc {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+      }
+
+      .media-player {
+        width: 100%;
+        max-width: 1200px;
+        margin: 20px 0;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .media-player video,
+      .media-player audio {
+        width: 100%;
+      }
+
+      .media-player img {
+        width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+      }
+
+      .player-controls {
+        padding: 15px;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      footer {
+        background: var(--color-space);
+        padding: 30px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: auto;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .copyright {
+        color: var(--color-text-secondary);
+        font-size: 0.9rem;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2.5rem;
+        }
+
+        h2 {
+          font-size: 2rem;
+        }
+
+        .options {
+          grid-template-columns: 1fr;
+        }
+
+        .level::after {
+          width: 30px;
+        }
+
+        .media-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container header-container">
+        <div class="logo"><span>♫</span> StellarMind</div>
+      </div>
+    </header>
+
+    <div class="container app-container">
+      <!-- Welcome Screen -->
+      <div class="screen welcome-screen active">
+        <h1>StellarMind Wellness</h1>
+        <p>
+          A personalized mental health support system for astronauts during
+          long-duration space missions
+        </p>
+        <div class="access-warning">
+          <h3>Weekly Access Reminder</h3>
+          <p>
+            This application is designed to be accessed once per week as part of
+            your mental health routine.
+          </p>
+          <p id="last-access-date">Last access: Not yet recorded</p>
+        </div>
+        <button class="btn" id="start-btn">Begin Wellness Check</button>
+      </div>
+
+      <!-- Question Screen -->
+      <div class="screen question-screen">
+        <h2>Mental Wellness Assessment</h2>
+        <p>
+          Please answer the following questions honestly. Your responses will
+          help tailor your wellness experience.
+        </p>
+
+        <div class="question-container">
+          <div class="question" id="current-question">
+            How would you describe your overall mood this past week?
+          </div>
+          <div class="options">
+            <div class="option" data-value="1">Exceptionally positive</div>
+            <div class="option" data-value="2">Generally good</div>
+            <div class="option" data-value="4">Neutral</div>
+            <div class="option" data-value="6">Somewhat low</div>
+            <div class="option" data-value="8">Quite negative</div>
+            <div class="option" data-value="10">Extremely depressed</div>
+          </div>
+        </div>
+
+        <button class="btn" id="next-btn" disabled>Next Question</button>
+      </div>
+
+      <!-- Results Screen -->
+      <div class="screen results-screen">
+        <h2>Your Wellness Assessment</h2>
+        <p>
+          Based on your responses, here is your current mental wellness level:
+        </p>
+
+        <div class="level-indicator">
+          <div class="level level-1" data-level="1">1</div>
+          <div class="level level-2" data-level="2">2</div>
+          <div class="level level-3" data-level="3">3</div>
+          <div class="level level-4" data-level="4">4</div>
+          <div class="level level-5" data-level="5">5</div>
+          <div class="level level-6" data-level="6">6</div>
+          <div class="level level-7" data-level="7">7</div>
+          <div class="level level-8" data-level="8">8</div>
+          <div class="level level-9" data-level="9">9</div>
+          <div class="level level-10" data-level="10">10</div>
+        </div>
+
+        <div class="result-container">
+          <h3>Your Wellness Level: <span id="wellness-score">5</span>/10</h3>
+          <div class="depression-level" id="level-display">Moderate</div>
+          <p class="level-desc" id="level-description">
+            You're experiencing some emotional challenges but maintaining
+            overall functionality.
+          </p>
+        </div>
+
+        <button class="btn" id="view-media-btn">
+          View Personalized Content
+        </button>
+      </div>
+
+      <!-- Media Screen -->
+      <div class="screen media-screen">
+        <h2>Your Personalized Content</h2>
+        <p>Curated for your current wellness needs</p>
+
+        <div class="media-player" id="media-player">
+          <div
+            id="player-placeholder"
+            style="padding: 40px; text-align: center; width: 1200px"
+          >
+            Select an item to view or listen
+          </div>
+        </div>
+
+        <div class="media-grid" id="media-grid">
+          <!-- Media items will be dynamically inserted here -->
+        </div>
+
+        <button class="btn btn-outline" id="back-to-start">
+          Return to Start
+        </button>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container footer-content">
+        <div class="copyright">
+          © 2023 StellarMind Astronaut Wellness System
+        </div>
+        <div class="copyright">Designed for deep space missions</div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // DOM Elements
+        const screens = document.querySelectorAll(".screen");
+        const startBtn = document.getElementById("start-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const viewMediaBtn = document.getElementById("view-media-btn");
+        const backToStartBtn = document.getElementById("back-to-start");
+        const options = document.querySelectorAll(".option");
+        const lastAccessDate = document.getElementById("last-access-date");
+        const wellnessScore = document.getElementById("wellness-score");
+        const levelDisplay = document.getElementById("level-display");
+        const levelDescription = document.getElementById("level-description");
+        const mediaGrid = document.getElementById("media-grid");
+        const mediaPlayer = document.getElementById("media-player");
+
+        // Application state
+        let currentScreen = 0;
+        let depressionLevel = 5;
+        let lastAccess = localStorage.getItem("lastAccess");
+
+        //   Set last access date
+        if (lastAccess) {
+          lastAccessDate.textContent = `Last access: ${new Date(
+            parseInt(lastAccess)
+          ).toLocaleDateString()}`;
+        }
+
+        //   Check if accessed this week
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+        if (lastAccess && parseInt(lastAccess) > oneWeekAgo.getTime()) {
+          startBtn.disabled = true;
+          startBtn.textContent =
+            "Available in " +
+            Math.ceil(
+              (parseInt(lastAccess) - oneWeekAgo.getTime()) /
+                (1000 * 60 * 60 * 24)
+            ) +
+            " days";
+        }
+
+        // Questions for assessment
+        const questions = [
+          "How would you describe your overall mood this past week?",
+          "How have you been sleeping recently?",
+          "How would you rate your energy levels?",
+          "How connected do you feel to your mission and crew?",
+          "How often have you felt homesick or isolated?",
+          "How would you describe your appetite and eating habits?",
+          "How motivated do you feel about your work?",
+          "How often do you experience negative thoughts?",
+          "How would you rate your ability to concentrate?",
+          "How hopeful do you feel about the future?",
+        ];
+
+        // Media library by depression level (1-10)
+        const mediaLibrary = {
+          1: [
+            {
+              type: "video",
+              title: "Mission Highlights",
+              src: "Video1.mp4",
+              thumb: "mission_thumb.jpg",
+            },
+            {
+              type: "music",
+              title: "Upbeat Work Music",
+              src: "upbeat_music.mp3",
+              thumb: "music_thumb.jpg",
+            },
+            {
+              type: "image",
+              title: "Crew Celebration",
+              src: "crew_celebration.jpg",
+              thumb: "crew_celebration_thumb.jpg",
+            },
+          ],
+          2: [
+            {
+              type: "image",
+              title: "Earth from Space",
+              src: "earth_view.jpg",
+              thumb: "earth_thumb.jpg",
+            },
+            {
+              type: "music",
+              title: "Relaxing Instrumentals",
+              src: "relaxing_music.mp3",
+              thumb: "music_thumb.jpg",
+            },
+            {
+              type: "video",
+              title: "Science Discovery",
+              src: "science_discovery.mp4",
+              thumb: "science_thumb.jpg",
+            },
+          ],
+          3: [
+            {
+              type: "music",
+              title: "Favorite Album",
+              src: "favorite_album.mp3",
+              thumb: "album_thumb.jpg",
+            },
+            {
+              type: "image",
+              title: "Family Photo",
+              src: "family.jpg",
+              thumb: "family_thumb.jpg",
+            },
+            {
+              type: "video",
+              title: "Message from Home",
+              src: "message_home.mp4",
+              thumb: "message_thumb.jpg",
+            },
+          ],
+          4: [
+            {
+              type: "video",
+              title: "Pet Videos",
+              src: "pets.mp4",
+              thumb: "pets_thumb.jpg",
+            },
+            {
+              type: "music",
+              title: "Comfort Songs",
+              src: "comfort_music.mp3",
+              thumb: "music_thumb.jpg",
+            },
+            {
+              type: "image",
+              title: "Favorite Place",
+              src: "favorite_place.jpg",
+              thumb: "place_thumb.jpg",
+            },
+          ],
+          5: [
+            {
+              type: "image",
+              title: "Achievement Memorial",
+              src: "achievement.jpg",
+              thumb: "achievement_thumb.jpg",
+            },
+            {
+              type: "music",
+              title: "Calming Nature Sounds",
+              src: "nature_sounds.mp3",
+              thumb: "nature_thumb.jpg",
+            },
+            {
+              type: "video",
+              title: "Inspiring Talk",
+              src: "inspiring_talk.mp4",
+              thumb: "inspiration_thumb.jpg",
+            },
+          ],
+          6: [
+            {
+              type: "music",
+              title: "Meditation Guide",
+              src: "meditation.mp3",
+              thumb: "meditation_thumb.jpg",
+            },
+            {
+              type: "image",
+              title: "Positive Message",
+              src: "positive_message.jpg",
+              thumb: "message_thumb.jpg",
+            },
+            {
+              type: "video",
+              title: "Funny Moments",
+              src: "funny_moments.mp4",
+              thumb: "funny_thumb.jpg",
+            },
+          ],
+          7: [
+            {
+              type: "video",
+              title: "Therapist Message",
+              src: "therapist_message.mp4",
+              thumb: "therapist_thumb.jpg",
+            },
+            {
+              type: "music",
+              title: "Guided Relaxation",
+              src: "guided_relaxation.mp3",
+              thumb: "relaxation_thumb.jpg",
+            },
+            {
+              type: "image",
+              title: "Hope Image",
+              src: "hope.jpg",
+              thumb: "hope_thumb.jpg",
+            },
+          ],
+          8: [
+            {
+              type: "image",
+              title: "Crew Support",
+              src: "crew_support.jpg",
+              thumb: "crew_thumb.jpg",
+            },
+            {
+              type: "music",
+              title: "Calming旋律",
+              src: "calming_music.mp3",
+              thumb: "music_thumb.jpg",
+            },
+            {
+              type: "video",
+              title: "Emergency Protocol",
+              src: "protocol.mp4",
+              thumb: "protocol_thumb.jpg",
+            },
+          ],
+          9: [
+            {
+              type: "video",
+              title: "Urgent Support Message",
+              src: "urgent_support.mp4",
+              thumb: "support_thumb.jpg",
+            },
+            {
+              type: "music",
+              title: "Stress Relief",
+              src: "stress_relief.mp3",
+              thumb: "music_thumb.jpg",
+            },
+            {
+              type: "image",
+              title: "Crisis Management",
+              src: "crisis_management.jpg",
+              thumb: "crisis_thumb.jpg",
+            },
+          ],
+          10: [
+            {
+              type: "video",
+              title: "EMERGENCY PROTOCOL",
+              src: "emergency.mp4",
+              thumb: "emergency_thumb.jpg",
+            },
+            {
+              type: "music",
+              title: "IMMEDIATE SUPPORT",
+              src: "immediate_support.mp3",
+              thumb: "support_thumb.jpg",
+            },
+            {
+              type: "image",
+              title: "CRISIS INTERVENTION",
+              src: "crisis_intervention.jpg",
+              thumb: "crisis_thumb.jpg",
+            },
+          ],
+        };
+
+        // Level descriptions
+        const levelDescriptions = {
+          1: "You're feeling exceptional! Your positive mood contributes greatly to mission success.",
+          2: "You're in good spirits overall. Keep up the positive mindset.",
+          3: "You're generally stable with normal fluctuations in mood.",
+          4: "You're experiencing mild concerns but managing well.",
+          5: "You're experiencing some emotional challenges but maintaining overall functionality.",
+          6: "You're facing moderate emotional difficulties that may benefit from support.",
+          7: "You're experiencing significant emotional challenges. Support is recommended.",
+          8: "You're facing substantial emotional difficulties. Active support is important.",
+          9: "You're experiencing severe emotional distress. Immediate support is needed.",
+          10: "You're in a critical state of emotional distress. Emergency protocols are activated.",
+        };
+
+        // Level display texts
+        const levelTexts = {
+          1: "Excellent",
+          2: "Very Good",
+          3: "Good",
+          4: "Mild Concern",
+          5: "Moderate",
+          6: "Moderate+",
+          7: "Significant",
+          8: "Substantial",
+          9: "Severe",
+          10: "Critical",
+        };
+
+        // Level colors
+        const levelColors = {
+          1: "var(--color-mild)",
+          2: "#8BC34A",
+          3: "#CDDC39",
+          4: "#FFEB3B",
+          5: "#FFC107",
+          6: "#FF9800",
+          7: "#FF5722",
+          8: "#f4511e",
+          9: "#e64a19",
+          10: "var(--color-severe)",
+        };
+
+        // Event Listeners
+        startBtn.addEventListener("click", function () {
+          if (!lastAccess || parseInt(lastAccess) <= oneWeekAgo.getTime()) {
+            localStorage.setItem("lastAccess", Date.now().toString());
+            showScreen(1);
+            loadQuestion(0);
+          }
+        });
+
+        nextBtn.addEventListener("click", function () {
+          if (currentQuestion < questions.length - 1) {
+            currentQuestion++;
+            loadQuestion(currentQuestion);
+          } else {
+            calculateResult();
+            showScreen(2);
+          }
+        });
+
+        viewMediaBtn.addEventListener("click", function () {
+          showScreen(3);
+          loadMediaForLevel(depressionLevel);
+        });
+
+        backToStartBtn.addEventListener("click", function () {
+          showScreen(0);
+        });
+
+        options.forEach((option) => {
+          option.addEventListener("click", function () {
+            options.forEach((opt) => opt.classList.remove("selected"));
+            this.classList.add("selected");
+            nextBtn.disabled = false;
+
+            // Update depression level based on selection
+            const value = parseInt(this.getAttribute("data-value"));
+            depressionLevel = Math.max(
+              1,
+              Math.min(10, depressionLevel + (value - 5))
+            );
+          });
+        });
+
+        // Functions
+        function showScreen(screenIndex) {
+          screens.forEach((screen, index) => {
+            screen.classList.toggle("active", index === screenIndex);
+          });
+          currentScreen = screenIndex;
+        }
+
+        let currentQuestion = 0;
+        function loadQuestion(index) {
+          document.getElementById("current-question").textContent =
+            questions[index];
+          options.forEach((opt) => opt.classList.remove("selected"));
+          nextBtn.disabled = true;
+        }
+
+        function calculateResult() {
+          // Ensure depression level is within bounds
+          depressionLevel = Math.max(1, Math.min(10, depressionLevel));
+
+          wellnessScore.textContent = depressionLevel;
+          levelDisplay.textContent = levelTexts[depressionLevel];
+          levelDescription.textContent = levelDescriptions[depressionLevel];
+          levelDisplay.style.backgroundColor = levelColors[depressionLevel];
+
+          // Highlight the appropriate level indicator
+          document.querySelectorAll(".level").forEach((level) => {
+            level.classList.toggle(
+              "active",
+              parseInt(level.getAttribute("data-level")) === depressionLevel
+            );
+          });
+        }
+
+        function loadMediaForLevel(level) {
+          // Clear previous media
+          mediaGrid.innerHTML = "";
+
+          // Get media for this level
+          const mediaItems = mediaLibrary[level] || mediaLibrary[5];
+
+          // Create media cards
+          mediaItems.forEach((media) => {
+            const card = document.createElement("div");
+            card.className = "media-card";
+            card.innerHTML = `
+                        <img src="${media.thumb}" alt="${
+              media.title
+            }" class="media-thumbnail">
+                        <div class="media-info">
+                            <div class="media-title">${media.title}</div>
+                            <div class="media-type">${media.type.toUpperCase()}</div>
+                        </div>
+                    `;
+
+            card.addEventListener("click", () => playMedia(media));
+            mediaGrid.appendChild(card);
+          });
+        }
+
+        function playMedia(media) {
+          let playerHTML = "";
+
+          switch (media.type) {
+            case "video":
+              playerHTML = `
+                            <video controls>
+                                <source src="${media.src}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="player-controls">
+                                <button class="btn" onclick="this.parentElement.parentElement.querySelector('video').play()">Play</button>
+                                <button class="btn" onclick="this.parentElement.parentElement.querySelector('video').pause()">Pause</button>
+                            </div>
+                        `;
+              break;
+            case "music":
+              playerHTML = `
+                            <audio controls>
+                                <source src="${media.src}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            <div class="player-controls">
+                                <button class="btn" onclick="this.parentElement.parentElement.querySelector('audio').play()">Play</button>
+                                <button class="btn" onclick="this.parentElement.parentElement.querySelector('audio').pause()">Pause</button>
+                            </div>
+                        `;
+              break;
+            case "image":
+              playerHTML = `<img src="${media.src}" alt="${media.title}">`;
+              break;
+          }
+
+          mediaPlayer.innerHTML = playerHTML;
+        }
+
+        // Initialize
+        loadQuestion(0);
+      });
+
+      localStorage.clear();
+    </script>
+  </body>
+</html>
